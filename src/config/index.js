@@ -159,10 +159,10 @@ if (process.env.NODE_ENV === 'development') {
 
 	// eslint-disable-next-line no-undef
 } else if (process.env.NODE_ENV === 'production') {
-	API_URL = 'https://e-commerce-backend-8kn7.onrender.com';
+	API_URL = 'https://ecommerce-backend-txyr.onrender.com';
 } else {
 	// Default or testing environment
-	API_URL = 'https://e-commerce-backend-8kn7.onrender.com';
+	API_URL = 'https://ecommerce-backend-txyr.onrender.com';
 }
 
 export { API_URL };
