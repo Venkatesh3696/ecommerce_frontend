@@ -20,15 +20,13 @@ const AuthLogin = () => {
 		e.preventDefault();
 
 		dispatch(loginUser(formData)).then((data) => {
-			console.log('after diaspatch', data);
-
 			if (data?.payload?.success) {
 				toast({
 					title: data?.payload?.message,
 				});
 			} else {
 				toast({
-					title: data?.payload?.message,
+					title: data?.message,
 					variant: 'destructive',
 				});
 			}

@@ -105,8 +105,6 @@ const CommonForm = ({
 		return element;
 	};
 
-	console.log(isButtonDisabled, 'diabled');
-
 	return (
 		<form onSubmit={onSubmit}>
 			<div className='flex flex-col gap-3'>

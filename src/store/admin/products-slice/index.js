@@ -1,6 +1,6 @@
 import { API_URL } from '@/config';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios, { formToJSON } from 'axios';
+import axios from 'axios';
 
 const initialState = {
 	isLoading: false,
@@ -22,6 +22,7 @@ export const addNewProduct = createAsyncThunk(
 		return result.data;
 	},
 );
+
 export const fetchAllProducts = createAsyncThunk(
 	'products/fetchallproducts',
 	async () => {
@@ -37,6 +38,7 @@ export const fetchAllProducts = createAsyncThunk(
 		return result.data;
 	},
 );
+
 export const editProduct = createAsyncThunk(
 	'products/editproduct',
 	async ({ id, formData }) => {
@@ -52,6 +54,7 @@ export const editProduct = createAsyncThunk(
 		return result.data;
 	},
 );
+
 export const deleteProduct = createAsyncThunk(
 	'products/deleteproduct',
 	async (id) => {
