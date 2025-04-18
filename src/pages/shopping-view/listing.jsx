@@ -8,18 +8,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { sortOptions } from "@/config";
-import {
-  fetchAllFilteredProducts,
-  fetchProductDetails,
-} from "@/store/shop/products-slice";
+import { fetchAllFilteredProducts } from "@/store/shop/products-slice";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 
 import { useToast } from "@/hooks/use-toast";
 import { ArrowUpDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
-import ProductDetailsDialog from "../../components/shopping-view/productDetails";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const createSearchParamsHelper = (filterParams) => {
   const queryParams = [];
@@ -33,7 +29,6 @@ const createSearchParamsHelper = (filterParams) => {
 };
 
 const ShoppingListing = () => {
-  const dispatch = useDispatch();
   const { productsList, productDetails } = useSelector(
     (state) => state.shoppingProducts
   );
@@ -42,8 +37,10 @@ const ShoppingListing = () => {
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState("price-lowtohigh");
   const [searchParams, setSearchParams] = useSearchParams();
-  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+
   const { toast } = useToast();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSort = (value) => {
     setSort(value);
@@ -78,7 +75,7 @@ const ShoppingListing = () => {
   };
 
   const handleGetProductDetails = (getCurrentProductId) => {
-    dispatch(fetchProductDetails(getCurrentProductId));
+    navigate(`/shop/products/${getCurrentProductId}`);
   };
 
   const handleAddToCart = (productId) => {
@@ -100,8 +97,8 @@ const ShoppingListing = () => {
 
   useEffect(() => {
     setSort("price-lowtohigh");
-    // setFilters(JSON.parse(sessionStorage.getItem('filters')) || '');
-  }, []);
+    setFilters(JSON.parse(sessionStorage.getItem("filters")) || "");
+  }, [searchParams]);
 
   useEffect(() => {
     if ((filters !== null) & (sort !== null)) {
@@ -115,12 +112,6 @@ const ShoppingListing = () => {
       dispatch(fetchAllFilteredProducts());
     }
   }, [dispatch, sort, filters]);
-
-  useEffect(() => {
-    if (productDetails !== null) {
-      setOpenDetailsDialog(true);
-    }
-  }, [productDetails]);
 
   // console.log('products => ', productsList, productDetails);
 
@@ -174,11 +165,6 @@ const ShoppingListing = () => {
             : null}
         </div>
       </div>
-      <ProductDetailsDialog
-        open={openDetailsDialog}
-        setOpen={setOpenDetailsDialog}
-        productDetails={productDetails}
-      />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { HomeIcon, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,26 +16,46 @@ import {
 import { logoutUser } from "@/store/auth-slice";
 import { useEffect, useState } from "react";
 import { fetchCartItems } from "@/store/shop/cart-slice";
-import UserCartWrapper from "../../pages/shopping-view/shopping-cart";
+import { Label } from "../ui/label";
 
 const ShoppingHeader = () => {
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
-  // const { cartItems } = useSelector((state) => state.cartItems);
-
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
+  const [filters, setFilters] = useState("");
+
+  const { user } = useSelector((state) => state.auth);
 
   const MenuItems = () => {
+    const handleNavigate = (getCurrentMenuItem) => {
+      sessionStorage.removeItem("filters");
+      console.log(getCurrentMenuItem);
+      const currentFilter =
+        getCurrentMenuItem.id !== "home"
+          ? { category: [getCurrentMenuItem.id] }
+          : null;
+
+      if (currentFilter) {
+        sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+        navigate(
+          `${getCurrentMenuItem.path}?category=${getCurrentMenuItem.id}`
+        );
+      } else {
+        sessionStorage.removeItem("filters");
+        navigate(getCurrentMenuItem.path);
+      }
+    };
+
     return (
       <nav className="flex flex-col mb-3 gap-6 lg:mb-0  lg:items-center lg:flex-row">
         {shoppingViewHeaderMenuItems.map((menuItem) => (
-          <Link
+          <Label
             key={menuItem.id}
-            to={menuItem.path}
-            className="text-sm font-medium"
+            onClick={() => handleNavigate(menuItem)}
+            className="text-sm font-medium cursor-pointer"
           >
             {menuItem.label}
-          </Link>
+          </Label>
         ))}
       </nav>
     );
@@ -54,17 +74,17 @@ const ShoppingHeader = () => {
           onClick={() => navigate("/shop/cart")}
         >
           <ShoppingCart className="w-6 h-6" />
-          <span className="sr-only">USer Cart</span>
+          <span className="sr-only">User Cart</span>
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar className="bg-black ">
+            <Avatar className="bg-black cursor-pointer ">
               <AvatarFallback className="bg-black text-white font-extrabold">
                 {user.userName[0].toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="right" className="w-56 ">
+          <DropdownMenuContent side="right" className="w-56 top-20">
             <DropdownMenuLabel>Logged in as {user.userName}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -112,7 +132,6 @@ const ShoppingHeader = () => {
         <div className="hidden lg:block">
           <MenuItems />
         </div>
-
         <div className="hidden lg:block">
           <HeaderRightContent />
         </div>

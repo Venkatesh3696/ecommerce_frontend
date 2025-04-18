@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllFilteredProducts } from "@/store/shop/products-slice";
 import ShoppingProductTile from "@/components/shopping-view/productTile";
+import { useNavigate } from "react-router-dom";
 
 const categoriesWithIcon = [
   { id: "men", label: "Men", icon: ShirtIcon },
@@ -45,8 +46,16 @@ const ShoppingHome = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const dispatch = useDispatch();
   const { productsList } = useSelector((state) => state.shoppingProducts);
+  const navigate = useNavigate();
 
-  const handleNavigateToListingpage = (getCurrentCategory, section) => {};
+  const handleNavigateToListingpage = (getCurrentItem, section) => {
+    sessionStorage.removeItem("filters");
+    const currentFilter = {
+      [section]: [getCurrentItem.id],
+    };
+    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+    navigate("/shop/listing");
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -64,8 +73,6 @@ const ShoppingHome = () => {
       })
     );
   }, [dispatch]);
-
-  console.log(productsList);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -133,6 +140,9 @@ const ShoppingHome = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {brandsWithIcons.map((item, index) => (
               <Card
+                onClick={() => {
+                  handleNavigateToListingpage(item, "brand");
+                }}
                 key={index}
                 className="cursor-pointer hover:shadow-lg transition-shadow"
               >
