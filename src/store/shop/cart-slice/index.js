@@ -16,7 +16,6 @@ export const addToCart = createAsyncThunk(
       productId,
       quantity,
     });
-    console.log(response.data);
     return response.data;
   }
 );

@@ -3,9 +3,11 @@ import { Button } from "../../components/ui/button";
 import UserCartItemsContent from "../../components/shopping-view/cart-items-content";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ShoppingCart() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shoppingCart);
 
@@ -39,7 +41,12 @@ function ShoppingCart() {
           <span className="font-bold">$ {totalCartAmount}</span>
         </div>
       </div>
-      <Button className="w-60 mt-5 self-end">Checkout</Button>
+      <Button
+        onClick={() => navigate("/shop/checkout")}
+        className="w-60 mt-5 self-end"
+      >
+        Checkout
+      </Button>
     </div>
   );
 }

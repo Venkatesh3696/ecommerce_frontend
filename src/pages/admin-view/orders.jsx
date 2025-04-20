@@ -1,5 +1,12 @@
+import AdminOrdersView from "@/components/admin-view/AdminOrdersView";
+
 const AdminOrders = () => {
-	return <div>Admin orders</div>;
+  console.log("rendering ao");
+  return (
+    <div className="w-full">
+      <AdminOrdersView />
+    </div>
+  );
 };
 
 export default AdminOrders;
