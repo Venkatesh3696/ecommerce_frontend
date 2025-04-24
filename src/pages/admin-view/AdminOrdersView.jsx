@@ -1,18 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
+  Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Table } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AdminOrdersView = () => {
-  console.log("rendering view");
+  const navigate = useNavigate();
+  const [orders, setOrders] = useState([]);
+
+  const orderid = 1;
   return (
-    <Card className="bg-red-500">
+    <Card>
       <CardHeader>
         <CardTitle>All Orders</CardTitle>
       </CardHeader>
@@ -36,7 +41,9 @@ const AdminOrdersView = () => {
               <TableCell>Delivered</TableCell>
               <TableCell>$100.00</TableCell>
               <TableCell>
-                <Button>View Details</Button>
+                <Button onClick={() => navigate(`/admin/orders/${orderid}`)}>
+                  View Details
+                </Button>
               </TableCell>
             </TableRow>
           </TableBody>

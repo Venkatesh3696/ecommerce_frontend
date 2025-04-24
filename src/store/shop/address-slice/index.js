@@ -26,7 +26,6 @@ export const fetchAllAddresses = createAsyncThunk(
   "/addresses/fetchAllAddresses",
   async () => {
     const response = await api.get("/api/shopping/address");
-    console.log(response.data);
     return response.data;
   }
 );

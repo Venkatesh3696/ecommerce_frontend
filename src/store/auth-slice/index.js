@@ -6,6 +6,7 @@ const initialState = {
   isAuthenticated: false,
   isLoading: true,
   user: null,
+  selectedAddress: null,
 };
 
 export const registerUser = createAsyncThunk(
@@ -58,6 +59,9 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {},
+    setAddress: (state, action) => {
+      state.selectedAddress = action.payload.addressInfo;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -110,6 +114,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser } = authSlice.actions;
+export const { setUser, setAddress } = authSlice.actions;
 
 export default authSlice.reducer;

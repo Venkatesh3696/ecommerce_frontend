@@ -13,7 +13,6 @@ export default function UserCartItemsContent({ cartItem }) {
   const { toast } = useToast();
   const { user } = useSelector((state) => state.auth);
 
-  console.log(cartItem);
   const handleCartItemDelete = () => {
     dispatch(deleteCartItem({ userId: user?.id, productId: cartItem?.product }))
       .then(() => {
@@ -38,7 +37,6 @@ export default function UserCartItemsContent({ cartItem }) {
             : getCartItem?.quantity - 1,
       })
     ).then((data) => {
-      console.log(data.payload);
       if (data.payload.success) {
         dispatch(fetchCartItems());
         toast({

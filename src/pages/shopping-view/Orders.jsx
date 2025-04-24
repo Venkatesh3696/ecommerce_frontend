@@ -8,8 +8,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { fetchAllOrdersForShoppingUser } from "@/store/shop/order-slice";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const ShoppingOrders = () => {
+  const { orders } = useSelector((state) => state.shoppingOrder);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchAllOrdersForShoppingUser());
+  }, [dispatch]);
   return (
     <Card>
       <CardHeader>
@@ -29,15 +38,20 @@ const ShoppingOrders = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell>12345</TableCell>
-              <TableCell>2022-01-01</TableCell>
-              <TableCell>Delivered</TableCell>
-              <TableCell>$100.00</TableCell>
-              <TableCell>
-                <Button>View Details</Button>
-              </TableCell>
-            </TableRow>
+            {orders.map((order, index) => {
+              console.log(order);
+              return (
+                <TableRow key={index}>
+                  <TableCell> {order._id} </TableCell>
+                  <TableCell>{order.orderDate.split("T")[0]} </TableCell>
+                  <TableCell>{order.orderStatus} </TableCell>
+                  <TableCell>{order.orderPrice} </TableCell>
+                  <TableCell>
+                    <Button>View Details</Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </CardContent>

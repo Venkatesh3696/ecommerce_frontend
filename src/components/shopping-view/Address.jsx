@@ -11,6 +11,7 @@ import {
 } from "@/store/shop/address-slice";
 import AddressCard from "./address-card";
 import { toast } from "@/hooks/use-toast";
+import { setAddress } from "@/store/auth-slice";
 
 const initialAddressFormData = {
   address: "",
@@ -20,13 +21,17 @@ const initialAddressFormData = {
   notes: "",
 };
 
-const Address = () => {
+const Address = ({ setCurrentSelectedAddress }) => {
   const [formData, setFormData] = useState(initialAddressFormData);
   const [currentEditingId, setCurrentEditingId] = useState(null);
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
-  const { addressList } = useSelector((state) => state.shopAddress);
+  const { addressList } = useSelector((state) => state.shoppingAddress);
+
+  // const selectedAddress = useSelector(
+  //   (state) => state.auth.address.selectedAddress
+  // );
 
   const isFormValid = () => {
     return Object.keys(formData)
@@ -96,6 +101,10 @@ const Address = () => {
     });
   };
 
+  const handleSelectAddress = (getCurrentAddress) => {
+    dispatch(setAddress(getCurrentAddress));
+  };
+
   useEffect(() => {
     dispatch(fetchAllAddresses());
   }, [dispatch]);
@@ -111,6 +120,8 @@ const Address = () => {
                 handleDeleteAddress={handleDeleteAddress}
                 handleEditAddress={handleEditAddress}
                 currentEditingId={currentEditingId}
+                handleSelectAddress={handleSelectAddress}
+                setCurrentSelectedAddress={setCurrentSelectedAddress}
               />
             ))
           : null}
