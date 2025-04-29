@@ -27,7 +27,7 @@ const ShoppingCheckout = () => {
   console.log(user);
 
   const orderData = {
-    userId: user._id,
+    userId: user.id,
     cartItems: cartItems?.map((item) => ({
       productId: item?.product,
       image: item?.image,
@@ -95,16 +95,20 @@ const ShoppingCheckout = () => {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_signature: response.razorpay_signature,
               paymentStatus: "paid",
+              orderStatus: "confirmed",
               ...orderData,
             };
 
-            dispatch(createNewOrder(orderPayload));
+            dispatch(createNewOrder(orderPayload)).then((data) => {
+              if (data.status === 200) {
+                toast({
+                  title: "Order Placed",
+                  description: "Payment successful! Thank you for your order.",
+                });
+              }
 
-            toast({
-              title: "Order Placed",
-              description: "Payment successful! Thank you for your order.",
+              // window.location.href = "/shop/thankyou";
             });
-            window.location.href = "/shop/thankyou";
           } else {
             toast({
               description: "Payment verification failed. Please try again.",

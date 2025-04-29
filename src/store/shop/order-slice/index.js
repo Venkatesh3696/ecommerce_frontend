@@ -10,7 +10,9 @@ const initialState = {
 export const createNewOrder = createAsyncThunk(
   "/order/createNewOrder",
   async (orderData) => {
+    console.log("order Data in thunk crete order", orderData);
     const { data } = await api.post("/api/shopping/orders", orderData);
+    console.log(data);
     return data;
   }
 );
@@ -32,13 +34,11 @@ const shoppingOrderSlice = createSlice({
       .addCase(createNewOrder.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createNewOrder.fulfilled, (state, action) => {
+      .addCase(createNewOrder.fulfilled, (state) => {
         state.isLoading = false;
-        state.order = action.payload.order;
       })
       .addCase(createNewOrder.rejected, (state) => {
         state.isLoading = false;
-        state.order = null;
       })
       .addCase(fetchAllOrdersForShoppingUser.pending, (state) => {
         state.isLoading = true;

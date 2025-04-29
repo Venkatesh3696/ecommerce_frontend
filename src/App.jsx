@@ -25,6 +25,7 @@ import AdminOrdersView from "./pages/admin-view/AdminOrdersView";
 import ShoppingOrders from "./pages/shopping-view/Orders";
 import AdminOrderDetails from "./pages/admin-view/AdminOrderDetails";
 import ThankYou from "./pages/shopping-view/Thankyou";
+import OrderDetails from "./pages/shopping-view/OrderDetails";
 
 function App() {
   const { isAuthenticated, user, isLoading } = useSelector(
@@ -81,8 +82,7 @@ function App() {
         <Route path="account" element={<ShoppingAccount />} />
         <Route path="cart" element={<ShoppingCart />} />
         <Route path="checkout" element={<ShoppingCheckout />} />
-        <Route path="orders" element={<ShoppingOrders />} />
-        <Route path="orders" element={<ShoppingOrders />} />
+        <Route path="orders/:orderid" element={<OrderDetails />} />
         <Route path="thankyou" element={<ThankYou />} />
       </Route>
       <Route path="/unauth-page" element={<UnAuthPage />} />

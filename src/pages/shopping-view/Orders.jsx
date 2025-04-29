@@ -11,10 +11,13 @@ import {
 import { fetchAllOrdersForShoppingUser } from "@/store/shop/order-slice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const ShoppingOrders = () => {
   const { orders } = useSelector((state) => state.shoppingOrder);
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchAllOrdersForShoppingUser());
@@ -39,7 +42,6 @@ const ShoppingOrders = () => {
           </TableHeader>
           <TableBody>
             {orders.map((order, index) => {
-              console.log(order);
               return (
                 <TableRow key={index}>
                   <TableCell> {order._id} </TableCell>
@@ -47,7 +49,13 @@ const ShoppingOrders = () => {
                   <TableCell>{order.orderStatus} </TableCell>
                   <TableCell>{order.orderPrice} </TableCell>
                   <TableCell>
-                    <Button>View Details</Button>
+                    <Button
+                      onClick={() => {
+                        navigate(`/shop/orders/${order._id}`);
+                      }}
+                    >
+                      View Details
+                    </Button>
                   </TableCell>
                 </TableRow>
               );
